@@ -30,105 +30,65 @@
                     <h2 class="my-4">Task List</h2>
                     <a href="{% url 'accounts:logout' %}">logout</a>
                   </div>
+
+                  <form class="d-flex justify-content-center align-items-center mb-4" method="POST" action="/">
+                   {% csrf_token %}
+                    <div class="form-outline flex-fill">
+                      <input type="text" id="form2" class="form-control" name="title" placeholder="Enter Task">
+                      <label for="cars">Choose priority:</label>
+
+                        <select name="priority" id="" class="form-select">
+                            <option value="H">High Priority</option>
+                            <option value="M">Middle Priority</option>
+                            <option value="L">Low Priority</option>
+                        </select>
+                      <button type="submit" class="btn btn-info ">Add</button>
+                    </div>
+                    
+                  </form>
       
                   <table class="table text-white mb-0">
                     <thead>
                       <tr>
-                        <th scope="col">Team Member</th>
                         <th scope="col">Task</th>
                         <th scope="col">Priority</th>
                         <th scope="col">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
+                        {% for task in tasks %}
                       <tr class="fw-normal">
-                        <th>
-                          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                            alt="avatar 1" style="width: 45px; height: auto;">
-                          <span class="ms-2">Alice Mayer</span>
-                        </th>
+                        
                         <td class="align-middle">
-                          <span>Call Sam For payments</span>
+                            {% if task.complete == True %}
+                            <strike>{{task.title}}</strike>
+                            {% else %}
+                            <span>{{task}}</span>
+                            {% endif %}
                         </td>
+                        {% if task.priority == "H" %}
                         <td class="align-middle">
                           <h6 class="mb-0"><span class="badge bg-danger">High priority</span></h6>
                         </td>
+                        {% elif task.priority == "M" %}
+                            <td class="align-middle">
+                            <h6 class="mb-0"><span class="badge bg-warning">Middle priority</span></h6>
+                          </td>
+                        {% elif task.priority == "L"%}
                         <td class="align-middle">
-                          <a href="#!" data-mdb-toggle="tooltip" title="Done">
+                            <h6 class="mb-0"><span class="badge bg-success">Low priority</span></h6>
+                          </td>
+                        {% endif %}
+                        <td class="align-middle">
+                          <a href="{% url 'complete-task' task.id %}" data-mdb-toggle="tooltip" title="Done">
                             <i class="fas fa-check fa-lg text-success me-3">Done</i>
                           </a>
-                          <a href="#!" data-mdb-toggle="tooltip" title="Remove"><i
+                          <a href="{% url 'delete-task' task.id %}" data-mdb-toggle="tooltip" title="Remove"><i
                               class="fas fa-trash-alt fa-lg text-warning">Delete</i></a>
                         </td>
+                        
                       </tr>
-                      <tr class="fw-normal">
-                        <th>
-                          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
-                            alt="avatar 1" style="width: 45px; height: auto;">
-                          <span class="ms-2">Kate Moss</span>
-                        </th>
-                        <td class="align-middle">Make payment to Bluedart</td>
-                        <td class="align-middle">
-                          <h6 class="mb-0"><span class="badge bg-success">Low priority</span></h6>
-                        </td>
-                        <td class="align-middle">
-                          <a href="#!" data-mdb-toggle="tooltip" title="Done"><i
-                              class="fas fa-check fa-lg text-success me-3"></i></a>
-                          <a href="#!" data-mdb-toggle="tooltip" title="Remove"><i
-                              class="fas fa-trash-alt fa-lg text-warning"></i></a>
-                        </td>
-                      </tr>
-                      <tr class="fw-normal">
-                        <th>
-                          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
-                            alt="avatar 1" style="width: 45px; height: auto;">
-                          <span class="ms-2">Danny McChain</span>
-                        </th>
-                        <td class="align-middle">Office rent</td>
-                        <td class="align-middle">
-                          <h6 class="mb-0"><span class="badge bg-warning">Middle priority</span></h6>
-                        </td>
-                        <td class="align-middle">
-                          <a href="#!" data-mdb-toggle="tooltip" title="Done"><i
-                              class="fas fa-check fa-lg text-success me-3"></i></a>
-                          <a href="#!" data-mdb-toggle="tooltip" title="Remove"><i
-                              class="fas fa-trash-alt fa-lg text-warning"></i></a>
-                        </td>
-                      </tr>
-                      <tr class="fw-normal">
-                        <th>
-                          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp"
-                            alt="avatar 1" style="width: 45px; height: auto;">
-                          <span class="ms-2">Alexa Chung</span>
-                        </th>
-                        <td class="align-middle">Office grocery shopping</td>
-                        <td class="align-middle">
-                          <h6 class="mb-0"><span class="badge bg-danger">High priority</span></h6>
-                        </td>
-                        <td class="align-middle">
-                          <a href="#!" data-mdb-toggle="tooltip" title="Done"><i
-                              class="fas fa-check fa-lg text-success me-3"></i></a>
-                          <a href="#!" data-mdb-toggle="tooltip" title="Remove"><i
-                              class="fas fa-trash-alt fa-lg text-warning"></i></a>
-                        </td>
-                      </tr>
-                      <tr class="fw-normal">
-                        <th class="border-0">
-                          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp"
-                            alt="avatar 1" style="width: 45px; height: auto;">
-                          <span class="ms-2">Ben Smith</span>
-                        </th>
-                        <td class="border-0 align-middle">Ask for Lunch to Clients</td>
-                        <td class="border-0 align-middle">
-                          <h6 class="mb-0"><span class="badge bg-success">Low priority</span></h6>
-                        </td>
-                        <td class="border-0 align-middle">
-                          <a href="#!" data-mdb-toggle="tooltip" title="Done"><i
-                              class="fas fa-check fa-lg text-success me-3"></i></a>
-                          <a href="#!" data-mdb-toggle="tooltip" title="Remove"><i
-                              class="fas fa-trash-alt fa-lg text-warning"></i></a>
-                        </td>
-                      </tr>
+                     {% endfor %}
                     </tbody>
                   </table>
       
